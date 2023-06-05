@@ -1,5 +1,5 @@
 /* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
 /* CSS Variables */
 :root {
@@ -20,17 +20,17 @@
   --title-color: hsl(var(--hue), 12%, 15%);
   --text-color: hsl(var(--hue), 12%, 45%);
   --text-color-light: hsl(var(--hue), 8%, 75%);
-  --text-color-lighten: hsl(var(--hue), 8%, 92%);
+  --text-color-lighter: hsl(var(--hue), 8%, 92%);
   --body-color: hsl(var(--hue), 100%, 99%);
   --container-color: #fff;
 
   /* Font and typography -> .5rem = 8px | 1rem = 16px ...*/
-  --body-font: 'Poppins', sans-serif;
+  --body-font: "Poppins", sans-serif;
   --h2-font-size: 1.25rem;
   --h3-font-size: 1rem;
-  --normal-font-size: .938rem;
-  --small-font-size: .813rem;
-  --smaller-font-size: .75rem;
+  --normal-font-size: 0.938rem;
+  --small-font-size: 0.813rem;
+  --smaller-font-size: 0.75rem;
 }
 
 /* Responsive typography */
@@ -39,8 +39,8 @@
     --h2-font-size: 1.5rem;
     --h3-font-size: 1.25rem;
     --normal-font-size: 1rem;
-    --small-font-size: .875rem;
-    --smaller-font-size: .813rem;
+    --small-font-size: 0.875rem;
+    --smaller-font-size: 0.813rem;
   }
 }
 
@@ -58,7 +58,9 @@ body {
   color: var(--text-color);
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   color: var(--title-color);
   font-weight: 600;
 }
@@ -76,7 +78,6 @@ img {
   height: auto;
 }
 
-
 /* Resusable CSS Classes */
 .container {
   max-width: 968px;
@@ -87,4 +88,149 @@ img {
 .grid {
   display: grid;
   gap: 1.5rem;
+}
+
+/* Profile */
+.profile {
+  position: relative;
+  padding-top: 3.5rem;
+}
+
+.profile__container {
+  row-gap: 2rem;
+}
+
+.profile__data {
+  display: grid;
+  text-align: center;
+}
+
+.profile__picture {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(
+    180deg,
+    hsla(var(--hue), var(--sat), var(--lig), 1) 0%,
+    hsla(var(--hue), var(--sat), var(--lig), 0.2) 100%
+  );
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.profile__picture img {
+  width: 75px;
+}
+
+.profile__border {
+  border: 3.5px solid var(--first-color);
+  justify-self: center;
+  width: 115px;
+  height: 115px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.profile__name {
+  font-size: var(--h2-font-size);
+}
+
+.profile__profession {
+  font-size: var(--smaller-font-size);
+  font-weight: 500;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+}
+
+.profile__social {
+  display: flex;
+  justify-content: center;
+  column-gap: 0.75rem;
+}
+
+.profile__social-link {
+  font-size: 1.25rem;
+  color: var(--title-color);
+  transition: 0.3s;
+}
+
+.profile__social-link:hover {
+  color: var(--first-color);
+}
+
+.profile__info {
+  grid-template-columns: repeat(3, max-content);
+  justify-content: center;
+  column-gap: 2.5rem;
+}
+
+.profile__info-group {
+  text-align: center;
+}
+
+.profile__info-number {
+  font-size: var(--normal-font-size);
+  margin-bottom: 0.25rem;
+}
+
+.profile__info-description {
+  font-size: var(--smaller-font-size);
+  font-weight: 500;
+}
+
+.profile__buttons, .profile__buttons-small{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile__buttons{
+  column-gap: 1rem;;
+}
+
+.profile__buttons-small{
+  column-gap: .25rem;
+}
+
+
+/* buttons */
+
+.button{
+  display: inline-flex;
+  align-items: center;
+  column-gap: .5rem;
+  background-color: var(--first-color);
+  color: #fff;
+  padding: 1.15rem 1.5rem;
+  border-radius: .5rem;
+  transition: .3s;
+  box-shadow: 0 8px 24px hsla(var(--hue), var(--sat), var(lig), .25);
+}
+
+.button i{
+  font-size: 1.25rem;
+}
+
+
+.button:hover{
+  background-color: var(--first-color-alt);
+}
+
+.button__small{
+  padding: .75rem;
+  box-shadow: none;
+}
+
+.button__gray{
+  background-color: var(--text-color-lighter);
+  color: var(--title-color)
+}
+
+
+.button__gray:hover{
+  background-color: var(--text-color-light);
 }
