@@ -56,6 +56,7 @@ body {
   font-size: var(--normal-font-size);
   background-color: var(--body-color);
   color: var(--text-color);
+  transition: .3s;
 }
 
 h1,
@@ -76,6 +77,54 @@ a {
 img {
   max-width: 100%;
   height: auto;
+}
+
+/* Theme */
+#theme-button{
+  position: absolute;
+  top: 1.5rem;
+  right: 0;
+  font-size: 1.25rem;
+  color: var(--title-color);
+  cursor: pointer;
+  transition: .3s;
+}
+
+#theme-button:hover{
+  color: var(--first-color)
+}
+
+/* Dark Theme Variables */
+body.dark-theme{
+  --title-color: hsl(var(--hue), 12%, 95%);
+  --text-color: hsl(var(--hue), 12%, 75%);
+  --body-color: hsl(var(--hue), 40%, 8%);
+  --container-color: hsl(var(--hue), 24%, 12%);
+}
+
+/* Color changes in some parts of the website, in light theme */
+.dark-theme .button__gray{
+  background-color: var(--container-color)
+}
+
+.dark-theme .button__gray{
+  background-color: hsl(var(--hue), 24%, 16%);
+}
+
+.dark-theme .filters__content{
+  background-color: var(--container-color);
+}
+
+.dark-theme::-webkit-scrollbar{
+  background-color: hsl(var(--hue), 8%, 16%);
+}
+
+.dark-theme::-webkit-scrollbar-thumb{
+  background-color: hsl(var(--hue), 8%, 24%);
+}
+
+.dark-theme::-webkit-scrollbar-thumb:hover{
+  background-color: hsl(var(--hue), 8%, 32%);
 }
 
 /* Resusable CSS Classes */
@@ -377,4 +426,31 @@ img {
   background-color: var(--body-color);
 }
 
+
+
+/* Footer */
+.footer__copy{
+  display: block;
+  margin: 2.5rem 0 2rem;
+  text-align: center;
+  font-size: var(--smaller-font-size);
+  color: var(--text-color-light)
+}
+
+
+/* Scroll Bar */
+::-webkit-scrollbar{
+  width: .6rem;
+  border-radius: .5rem;
+  background-color: hsl(var(--hue), 8%, 66%);
+}
+
+::-webkit-scrollbar-thumb{
+  border-radius: .5rem;
+  background-color: hsl(var(--hue), 8%, 54%);
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background-color: hsl(var(--hue), 8%, 44%);
+}
 
