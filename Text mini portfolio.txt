@@ -1,0 +1,78 @@
+========== HEADER PROFILE ==========
+.profile__name
+Shivam bandral
+
+.profile__profession
+Web developer
+
+.profile__social
+https://www.instagram.com/sherlockedshivam
+https://www.linkedin.com/in/shivambandral/
+https://github.com/cheffycoder/
+
+.profile__info-number | .profile__info-description
+1.5
+Years of <br> work
+
++5
+Completed <br> projects
+
+10
+Bugfree <br> releases
+
+https://api.whatsapp.com/send?phone=+919682555108&text=Hello, more information!
+
+========== FILTERS TABS ==========
+.filters__button
+Projects
+
+Skills
+
+========== PROJECTS ==========	
+.projects__subtitle | .projects__title
+Web
+Co Develop
+
+Web
+Share On
+
+Web
+Parallax Website
+
+========== SKILLS ==========
+.skills__title
+Frontend Developer
+
+.skills__name | .skills__level
+HTML
+Basic
+
+CSS
+Intermediate
+
+JavaScript
+Intermediate
+
+React
+Intermediate
+
+Git
+Intermediate
+
+*****************
+
+MySQL
+Basic
+
+Firebase
+Basic
+
+Node Js
+Basic
+
+Express Js
+Basic
+
+========== FOOTER ==========
+.footer__copy
+&#169; Shivam Bandral. All rigths reserved
