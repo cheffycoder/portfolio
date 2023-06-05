@@ -4,12 +4,14 @@
 /* CSS Variables */
 :root {
   /* Colors */
-  /*Color mode HSL(hue, saturation, lightness)*/
+  /* Color mode HSL(hue, saturation, lightness)*/
+  /* Use Colors.dopely.top to choose from others */
   /*
       Blue: hsl(207, 90%, 61%)
       Purple: hsl(250, 66%, 75%)
       Pink: hsl(356, 66%, 75%)
       Teal: hsl(174, 63%, 62%)
+      Orange: hsl(14, 100%, 64%)
   */
 
   --hue: 207;
