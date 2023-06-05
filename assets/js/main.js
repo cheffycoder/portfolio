@@ -51,3 +51,23 @@ themeButton.addEventListener('click', () => {
     localStorage.setItem('selected-theme', getCurrentTheme())
     localStorage.setItem('selected-icon', getCurrentIcon())
 })
+
+
+
+// Scroll Reveal Animation
+
+const sr = ScrollReveal({
+    origin: "top",
+    distance: "60px",
+    duration: 2500,
+    delay: 400,
+});
+
+sr.reveal(`.profile__border`)
+sr.reveal(`.profile__name`, {delay: 300})
+sr.reveal(`.profile__profession`, {delay: 400})
+sr.reveal(`.profile__social`, {delay: 500})
+sr.reveal(`.profile__info-group`, {interval: 100, delay: 600})
+sr.reveal(`.profile__buttons`, {delay: 700})
+sr.reveal(`.filters__content`, {delay: 800})
+sr.reveal(`.filters`, {delay: 900})
