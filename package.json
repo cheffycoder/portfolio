@@ -18,7 +18,7 @@
     "typecheck": "pnpm -r --parallel typecheck",
     "test": "pnpm -r test",
     "test:e2e": "pnpm --filter @portfolio/web test:e2e",
-    "test:e2e:install": "pnpm --filter @portfolio/web exec playwright install",
+    "test:e2e:install": "pnpm --filter @portfolio/web test:e2e:install",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test",
     "prepare": "husky"
   },

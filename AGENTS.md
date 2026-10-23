@@ -33,7 +33,7 @@ pnpm dev                Website at http://localhost:3000
 pnpm build              Static build of the website → apps/web/out
 pnpm preview            Serve out/ the way GitHub Pages does (base path, 404 page) at http://localhost:4173
 pnpm check              Format check, lint, typecheck, unit tests — run before you finish
-pnpm test:e2e:install   Download the Playwright browsers (once)
+pnpm test:e2e:install   Download the Playwright browsers, Chromium and WebKit (once)
 pnpm test:e2e           Playwright on 5 setups (desktop Chrome/Safari, iPad, Android, iPhone), under /portfolio
 pnpm --filter @portfolio/web brand-images   Re-render favicon, app icons and the share card
 ```
@@ -46,7 +46,9 @@ Husky hooks:
 - **pre-commit**: refuses the commit if any code file under `src/` or `e2e/` is untracked or git-ignored (it would
   pass locally and be missing on GitHub), then lint-staged and typecheck.
 - **commit-msg**: commitlint (docs/commits.md).
-- **pre-push**: refuses pushes to `main`; then runs `pnpm check` on a clean copy of exactly the commit being pushed.
+- **pre-push**: refuses pushes to `main`; then, on a clean copy of exactly the commit being pushed, runs `pnpm check`
+  and (unless the push changes only docs) the browser tests on all five setups, as CI does. Needs
+  `pnpm test:e2e:install` once, and port 4173 free (stop any `pnpm preview`).
 
 Never bypass hooks (`--no-verify`) and never weaken a lint rule to make code pass.
 
@@ -92,7 +94,8 @@ Inside `apps/web/src`:
   Compose features in `app/`.
 - Shared: `components/<group>/<module>/`, `lib/`, `config/`, `utils/`, `testing/`, `types/`.
   **Shared code never imports features or `app/`.** Flow is one-way: shared → features → app.
-- `components/screens/` runs the snap deck: `ScreenDeck` (active screen, keys, in-page links), `Screen`
+- `components/screens/` runs the snap deck: `ScreenDeck` (active screen, keys, in-page links; handlers read the
+  live position from refs, never from state, so a key pressed mid-render isn't lost), `Screen`
   (one full-viewport screen; reveals and footers), `LocalNav`, `ScreenRail`, `ScreenLabel`.
 - `lib/` holds the connectors. One file decides the provider; the rest of the code only uses the contract:
   - analytics → `lib/analytics/analytics.service.ts` (`track()`); provider chosen in `analytics.helpers.ts`

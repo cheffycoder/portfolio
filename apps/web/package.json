@@ -12,7 +12,8 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "brand-images": "node scripts/make-brand-images.mjs"
+    "brand-images": "node scripts/make-brand-images.mjs",
+    "test:e2e:install": "playwright install chromium webkit"
   },
   "dependencies": {
     "class-variance-authority": "0.7.1",

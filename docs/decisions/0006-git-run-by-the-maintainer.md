@@ -5,7 +5,8 @@ push.
 
 **Decision.** Agents never run git commands that change anything; they hand over exact commands (AGENTS.md › Git).
 Every change goes branch → pull request → CI green → squash merge. Backstops: the pre-push hook rejects pushes
-to `main` and runs `pnpm check` on a clean copy of the pushed commit; Claude Code's project settings deny
+to `main` and, on a clean copy of the pushed commit, runs `pnpm check` and the browser tests (skipped when only
+docs changed); Claude Code's project settings deny
 mutating git commands.
 
 **Consequences.** Merging is the only way to deploy, and it only deploys after CI passes.

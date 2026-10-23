@@ -16,7 +16,12 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : [['list']],
+  // GitHub gets annotations and an HTML report; the pre-push hook (CI=1 on a laptop) gets readable lines.
+  reporter: process.env.GITHUB_ACTIONS
+    ? [['github'], ['html', { open: 'never' }]]
+    : process.env.CI
+      ? [['line']]
+      : [['list']],
   use: {
     baseURL: `http://localhost:${PORT}${BASE_PATH}/`,
     trace: 'on-first-retry',
