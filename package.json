@@ -1,0 +1,53 @@
+{
+  "name": "portfolio",
+  "private": true,
+  "description": "Shivam Bandral's portfolio: a static, SEO-first Next.js site on GitHub Pages.",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --filter @portfolio/web dev",
+    "build": "pnpm --filter @portfolio/web build",
+    "preview": "pnpm --filter @portfolio/web preview",
+    "lint": "eslint . --max-warnings=0",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "pnpm -r --parallel typecheck",
+    "test": "pnpm -r test",
+    "test:e2e": "pnpm --filter @portfolio/web test:e2e",
+    "test:e2e:install": "pnpm --filter @portfolio/web test:e2e:install",
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "21.2.3",
+    "@commitlint/config-conventional": "21.2.3",
+    "@eslint/js": "9.39.5",
+    "@portfolio/eslint-plugin": "workspace:*",
+    "@types/node": "26.6.5",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.4.2",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-import-resolver-typescript": "4.4.5",
+    "eslint-plugin-check-file": "3.3.2",
+    "globals": "16.4.0",
+    "husky": "9.1.7",
+    "lint-staged": "17.6.0",
+    "prettier": "3.9.10",
+    "prettier-plugin-tailwindcss": "0.8.1",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.2"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,mjs,cjs}": [
+      "eslint --max-warnings=0 --no-warn-ignored --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml,css}": [
+      "prettier --write"
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+# Nobody pushes to main: changes reach it only through a pull request (AGENTS.md › Git).
+target=""
+base=""
+while read -r local_ref local_sha remote_ref remote_sha; do
+  if [ "$remote_ref" = "refs/heads/main" ]; then
+    echo "✗ Pushing to main is not allowed. Push a branch and open a pull request instead."
+    exit 1
+  fi
+  case "$local_sha" in *[!0]*) target="$local_sha" ;; esac
+  case "$remote_sha" in *[!0]*) base="$remote_sha" ;; esac
+done
+[ -z "$target" ] && exit 0
+
+# What the push adds: since the branch was last pushed, or since it left main. Unknown → test everything.
+[ -z "$base" ] && base=$(git merge-base origin/main "$target" 2>/dev/null || true)
+if [ -n "$base" ] && git cat-file -e "$base^{commit}" 2>/dev/null; then
+  changed=$(git diff --name-only "$base" "$target")
+else
+  changed="unknown"
+fi
+
+# The browser tests only matter when something that reaches the site changed (not docs alone).
+e2e=0
+if [ "$changed" = "unknown" ] ||
+  printf '%s\n' "$changed" | grep -qE '^(apps/|tooling/|package\.json$|pnpm-lock\.yaml$|pnpm-workspace\.yaml$)'; then
+  e2e=1
+fi
+
+# Check exactly what is being pushed, the way GitHub sees it: a clean copy of the commit, without local
+# drafts, ignored files or changes that were never committed.
+echo "Checking the pushed commit in a clean copy (what GitHub will see)…"
+dir=$(mktemp -d)
+git worktree add --detach --quiet "$dir" "$target"
+(
+  cd "$dir" &&
+    HUSKY=0 pnpm install --frozen-lockfile --prefer-offline --silent &&
+    pnpm check &&
+    if [ "$e2e" = 1 ]; then
+      echo "Running the browser tests on all five setups (a few minutes)…"
+      # CI=1: its own fresh server (never a preview you left running), and retries as on GitHub.
+      CI=1 pnpm test:e2e
+    else
+      echo "Only docs changed: skipping the browser tests."
+    fi
+)
+status=$?
+git worktree remove --force "$dir"
+if [ "$status" != 0 ] && [ "$e2e" = 1 ]; then
+  echo "✗ Push stopped. If the browser tests could not start: run pnpm test:e2e:install once,"
+  echo "  and stop any pnpm preview you have running (it holds port 4173)."
+fi
+exit $status
