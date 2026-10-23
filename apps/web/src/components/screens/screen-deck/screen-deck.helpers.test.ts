@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest';
 
-import { indexOf, neighbours, screenCount, screenNumber, stepIndex } from './screen-deck.helpers';
+import {
+  hasArrived,
+  indexOf,
+  keyTarget,
+  neighbours,
+  screenCount,
+  screenNumber,
+  stepIndex,
+} from './screen-deck.helpers';
 
 const screens = [
   { id: 'intro', label: 'Intro' },
@@ -30,5 +38,17 @@ describe('screen deck', () => {
   it('finds a screen by id', () => {
     expect(indexOf(screens, 'about')).toBe(1);
     expect(indexOf(screens, 'nope')).toBe(-1);
+  });
+
+  it('adds quick key presses up from where a navigation is heading', () => {
+    expect(keyTarget(1, null, 1, 11)).toBe(2);
+    expect(keyTarget(1, 2, 1, 11)).toBe(3);
+    expect(keyTarget(1, 2, -1, 11)).toBe(1);
+    expect(keyTarget(10, 10, 1, 11)).toBe(10);
+  });
+
+  it('counts a screen as arrived within the tolerance', () => {
+    expect(hasArrived(101, 100, 2)).toBe(true);
+    expect(hasArrived(97, 100, 2)).toBe(false);
   });
 });

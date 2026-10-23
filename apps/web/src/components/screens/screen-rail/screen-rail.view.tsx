@@ -1,6 +1,6 @@
 'use client';
 
-import { screenNumber, stepIndex } from '@/components/screens/screen-deck/screen-deck.helpers';
+import { screenNumber } from '@/components/screens/screen-deck/screen-deck.helpers';
 import { useScreenDeck } from '@/components/screens/screen-deck/screen-deck.hooks';
 import { Icon } from '@/components/ui/icon/icon.view';
 
@@ -8,7 +8,7 @@ import { screenRailStyles } from './screen-rail.styles';
 
 /** Previous / next screen and a dot per screen, from the second screen on. Arrows grey out at either end. */
 export function ScreenRail() {
-  const { screens, active, goTo } = useScreenDeck();
+  const { screens, active, step } = useScreenDeck();
   const prev = screens[active - 1];
   const next = screens[active + 1];
   return (
@@ -22,7 +22,7 @@ export function ScreenRail() {
         className={screenRailStyles.step()}
         disabled={!prev}
         aria-label={prev ? `Previous screen: ${prev.label}` : 'Previous screen'}
-        onClick={() => goTo(stepIndex(active, -1, screens.length))}
+        onClick={() => step(-1)}
       >
         <Icon name="up" size={13} />
       </button>
@@ -47,7 +47,7 @@ export function ScreenRail() {
         className={screenRailStyles.step()}
         disabled={!next}
         aria-label={next ? `Next screen: ${next.label}` : 'Next screen'}
-        onClick={() => goTo(stepIndex(active, 1, screens.length))}
+        onClick={() => step(1)}
       >
         <Icon name="down" size={13} />
       </button>

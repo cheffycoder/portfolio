@@ -10,6 +10,8 @@ export type ScreenDeckValue = {
   /** Screens that have been active at least once (their reveals have played). */
   seen: ReadonlySet<string>;
   goTo: (index: number) => void;
+  /** One screen forward (1) or back (-1) from where the deck is, or is already heading. */
+  step: (delta: number) => void;
   /** False outside a deck (the articles page): screens then reveal as soon as they mount. */
   inDeck: boolean;
 };

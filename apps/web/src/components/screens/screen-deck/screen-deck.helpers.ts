@@ -19,6 +19,21 @@ export const neighbours = (screens: readonly ScreenEntry[], index: number) => ({
 export const stepIndex = (active: number, delta: number, total: number): number =>
   clamp(Math.max(active, 0) + delta, 0, Math.max(total - 1, 0));
 
+/**
+ * Where a key press should go: one step from the screen a navigation is already heading to, if any, so quick
+ * presses add up instead of repeating, otherwise from the active screen.
+ */
+export const keyTarget = (
+  active: number,
+  heading: number | null,
+  delta: number,
+  total: number,
+): number => stepIndex(heading ?? active, delta, total);
+
+/** Whether a screen's top sits at the container's top. */
+export const hasArrived = (screenTop: number, containerTop: number, tolerance: number): boolean =>
+  Math.abs(screenTop - containerTop) <= tolerance;
+
 /** The index of the screen with this id, or -1. */
 export const indexOf = (screens: readonly ScreenEntry[], id: string): number =>
   screens.findIndex((s) => s.id === id);

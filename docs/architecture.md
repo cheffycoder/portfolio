@@ -17,6 +17,9 @@ no-JS visitors get the full content.
 `ScreenDeck` renders the snap container and provides the deck state: the active screen (the one crossing the
 middle of the viewport, via IntersectionObserver), the screens already seen, and `goTo()`. It also turns
 `#screen` links and ↑/↓/Page keys into smooth scrolls and honours a `#screen` in the address on arrival.
+Key and rail handlers read the live position from refs (state reaches a handler only after a render), step from
+the screen a scroll is already heading to (so quick presses add up), and resend a scroll that Safari's snapping
+cut short. `data-deck-ready` on `<main>` marks when the handlers are attached.
 
 `Screen` is one full-viewport section. It sets `data-seen` the first time it is active (which plays the
 `reveal` animations), renders its footer from the deck, and hosts an optional background and header. Outside a

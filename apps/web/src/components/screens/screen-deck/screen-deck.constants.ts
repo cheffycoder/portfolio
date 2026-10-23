@@ -11,6 +11,7 @@ export const ScreenDeckContext = createContext<ScreenDeckValue>({
   active: -1,
   seen: new Set(),
   goTo: () => {},
+  step: () => {},
   inDeck: false,
 });
 
@@ -21,6 +22,18 @@ export const DECK_KEYS: Record<string, number> = {
   ArrowUp: -1,
   PageUp: -1,
 };
+
+/** No scroll events for this long means a scroll (smooth or snapping) has come to rest. */
+export const SETTLE_MS = 150;
+
+/**
+ * A navigation that comes to rest short of its screen within this window is sent once more. Safari's snapping
+ * can swallow a smooth scroll that starts while another one is still moving.
+ */
+export const RETRY_WINDOW_MS = 2000;
+
+/** How close (px) a screen's top must be to the container's top to count as arrived. */
+export const ARRIVED_PX = 2;
 
 /** While focus is in one of these, keys belong to it. */
 export const OWN_KEYS_SELECTOR =
