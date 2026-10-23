@@ -1,0 +1,14 @@
+# Code that exists on this computer but not in git passes here and fails on GitHub. Stop before that happens.
+stray=$({
+  git ls-files --others --exclude-standard -- 'apps/*/src/*' 'apps/*/e2e/*' 'tooling/*/src/*'
+  git ls-files --others --ignored --exclude-standard -- 'apps/*/src/*' 'apps/*/e2e/*' 'tooling/*/src/*'
+} | grep -v '\.DS_Store$' || true)
+if [ -n "$stray" ]; then
+  echo "✗ These code files are not in git (untracked or ignored), so GitHub would not get them:"
+  echo "$stray" | sed 's/^/    /'
+  echo "  Add them (git add) or remove them, then commit again."
+  exit 1
+fi
+
+pnpm exec lint-staged
+pnpm typecheck

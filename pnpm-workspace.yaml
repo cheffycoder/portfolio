@@ -1,0 +1,8 @@
+packages:
+  - apps/*
+  - tooling/*
+
+onlyBuiltDependencies:
+  - '@tailwindcss/oxide'
+  - unrs-resolver
+  - sharp

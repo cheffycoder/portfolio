@@ -1,2 +1,26 @@
-# misc
+# Installed packages
+node_modules/
+
+# Build output (always regenerated)
+apps/web/.next/
+apps/web/out/
+dist/
+*.tsbuildinfo
+next-env.d.ts
+
+# Secrets: keys and passwords never go in git
+.env
+.env.*
+!.env.example
+
+# Test and audit reports
+coverage/
+playwright-report/
+test-results/
+seo-reports/
+
+# Personal settings
+.claude/settings.local.json
 .DS_Store
+.idea/
+*.log

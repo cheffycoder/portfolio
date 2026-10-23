@@ -1,0 +1,715 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens. The single source of truth is docs/DESIGN.md; the locked visual reference is
+ * docs/prototype (v6). Raw values live on :root so the theme can flip them; @theme exposes them as
+ * Tailwind utilities, e.g. --fg → text-fg, --surface → bg-surface, --line-2 → ring-line-2.
+ */
+
+/* ---------- 1. Theme values (light: matte paper; dark: night) ---------- */
+:root {
+  color-scheme: light;
+  --bg: #e9e7e0; /* matte paper: 6:1 body, 4.6:1 labels */
+  --surface: #f2f0ea;
+  --surface-2: #e0ded7;
+  --fg: #161616;
+  --fg-2: #55555a;
+  --fg-3: #66666b;
+  --dim: #cbc9c1;
+  --line: rgb(22 22 22 / 0.08);
+  --line-2: rgb(22 22 22 / 0.15);
+  --ink: #161616; /* solid buttons */
+  --on-ink: #f2f0ea;
+  --nav-bg: rgb(242 240 234 / 0.82);
+  --scrim: rgb(233 231 224 / 0.5);
+  --live: #10b981;
+  --warn: #b45309;
+  --grid-dot: rgb(0 0 0 / 0.2);
+  --bg-art-opacity: 0.34;
+  --code-kw: #8a2be2;
+  --code-str: #047857;
+  --stage: #dfddd6;
+  --win: #f4f2ec;
+  --peer-bg: #e0f2fe;
+  --peer-fg: #075985;
+  --ok-bg: #ecfdf5;
+  --ok-fg: #047857;
+  --ok-line: rgb(16 185 129 / 0.25);
+  --contact-card: #111111;
+
+  /* Layout: one content column per breakpoint (DESIGN.md §3) */
+  --vc: min(87.5vw, 880px);
+  --nav-space: 76px;
+  --tile-radius: 20px;
+}
+@media (max-width: 1068px) {
+  :root {
+    --vc: min(87.5vw, 680px);
+  }
+}
+@media (max-width: 734px) {
+  :root {
+    --vc: min(87.5vw, 420px);
+    --nav-space: 68px;
+    --tile-radius: 18px;
+  }
+}
+
+/* Dark: following the system unless the visitor picked light, or picked dark explicitly. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --bg: #0b0c0e;
+    --surface: #141519;
+    --surface-2: #1a1b21;
+    --fg: #f3f4f6;
+    --fg-2: #a1a1aa;
+    --fg-3: #8b8b94;
+    --dim: #34353b;
+    --line: rgb(255 255 255 / 0.08);
+    --line-2: rgb(255 255 255 / 0.15);
+    --ink: #f3f4f6;
+    --on-ink: #0b0c0e;
+    --nav-bg: rgb(20 21 25 / 0.78);
+    --scrim: rgb(11 12 14 / 0.5);
+    --live: #34d399;
+    --warn: #fbbf24;
+    --grid-dot: rgb(255 255 255 / 0.28);
+    --bg-art-opacity: 0.12;
+    --code-kw: #c4b5fd;
+    --code-str: #6ee7b7;
+    --stage: #141519;
+    --win: #1a1b22;
+    --peer-bg: rgb(8 47 73 / 0.6);
+    --peer-fg: #7dd3fc;
+    --ok-bg: rgb(6 78 59 / 0.4);
+    --ok-fg: #34d399;
+    --ok-line: rgb(52 211 153 / 0.25);
+    --contact-card: #141519;
+  }
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #0b0c0e;
+  --surface: #141519;
+  --surface-2: #1a1b21;
+  --fg: #f3f4f6;
+  --fg-2: #a1a1aa;
+  --fg-3: #8b8b94;
+  --dim: #34353b;
+  --line: rgb(255 255 255 / 0.08);
+  --line-2: rgb(255 255 255 / 0.15);
+  --ink: #f3f4f6;
+  --on-ink: #0b0c0e;
+  --nav-bg: rgb(20 21 25 / 0.78);
+  --scrim: rgb(11 12 14 / 0.5);
+  --live: #34d399;
+  --warn: #fbbf24;
+  --grid-dot: rgb(255 255 255 / 0.28);
+  --bg-art-opacity: 0.12;
+  --code-kw: #c4b5fd;
+  --code-str: #6ee7b7;
+  --stage: #141519;
+  --win: #1a1b22;
+  --peer-bg: rgb(8 47 73 / 0.6);
+  --peer-fg: #7dd3fc;
+  --ok-bg: rgb(6 78 59 / 0.4);
+  --ok-fg: #34d399;
+  --ok-line: rgb(52 211 153 / 0.25);
+  --contact-card: #141519;
+}
+
+/* ---------- 2. Tailwind tokens ---------- */
+@theme inline {
+  --color-page: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-fg-2: var(--fg-2);
+  --color-fg-3: var(--fg-3);
+  --color-dim: var(--dim);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-ink: var(--ink);
+  --color-on-ink: var(--on-ink);
+  --color-nav: var(--nav-bg);
+  --color-scrim: var(--scrim);
+  --color-live: var(--live);
+  --color-warn: var(--warn);
+  --color-code-kw: var(--code-kw);
+  --color-code-str: var(--code-str);
+  --color-stage: var(--stage);
+  --color-win: var(--win);
+  --color-peer: var(--peer-bg);
+  --color-peer-fg: var(--peer-fg);
+  --color-ok: var(--ok-bg);
+  --color-ok-fg: var(--ok-fg);
+  --color-ok-line: var(--ok-line);
+  --color-contact: var(--contact-card);
+  --radius-tile: var(--tile-radius);
+
+  /* Faint fills on the current ink colour (both themes) */
+  --color-fg-3pc: color-mix(in srgb, var(--fg) 3%, transparent);
+  --color-fg-5pc: color-mix(in srgb, var(--fg) 5%, transparent);
+  --color-fg-6pc: color-mix(in srgb, var(--fg) 6%, transparent);
+  --color-fg-7pc: color-mix(in srgb, var(--fg) 7%, transparent);
+  --color-fg-9pc: color-mix(in srgb, var(--fg) 9%, transparent);
+  --color-fg-10pc: color-mix(in srgb, var(--fg) 10%, transparent);
+  --color-fg-13pc: color-mix(in srgb, var(--fg) 13%, transparent);
+  --color-fg-14pc: color-mix(in srgb, var(--fg) 14%, transparent);
+  --color-fg-24pc: color-mix(in srgb, var(--fg) 24%, transparent);
+  --color-fg-28pc: color-mix(in srgb, var(--fg) 28%, transparent);
+  --color-fg-30pc: color-mix(in srgb, var(--fg) 30%, transparent);
+  --color-fg-72pc: color-mix(in srgb, var(--fg) 72%, transparent);
+
+  /* The two brand gradients: the only colour on the site (FanCode warm, LogiNext cool). */
+  --color-warm-1: #ff6b2c;
+  --color-warm-2: #e0245e;
+  --color-warm-3: #8e1b5a;
+  --color-cool-1: #33c3ff;
+  --color-cool-2: #2563eb;
+  --color-cool-3: #1e3a8a;
+  --color-sun: #f5b83d;
+  --color-light-red: rgb(248 113 113 / 0.85);
+  --color-light-amber: rgb(251 191 36 / 0.85);
+  --color-light-green: rgb(52 211 153 / 0.85);
+  --color-paper: #f5f5f7;
+}
+
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-xs: 381px; /* max-xs: very small phones (≤380) */
+  --breakpoint-sm: 401px; /* max-sm: narrow phones (≤400) */
+  --breakpoint-md: 735px; /* medium starts; max-md: phones (≤734) */
+  --breakpoint-nav: 834px; /* the global nav shows its links */
+  --breakpoint-lg: 1069px; /* large starts; max-lg: phones + tablets (≤1068) */
+  --breakpoint-xl: 1180px; /* room for the side rail */
+
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', var(--font-inter), 'Segoe UI', Roboto,
+    sans-serif;
+  --font-display:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', var(--font-inter), 'Segoe UI', sans-serif;
+  --font-label: var(--font-space-grotesk), ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-code: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+
+  --ease-ui: cubic-bezier(0.28, 0.11, 0.32, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-implode: cubic-bezier(0.55, 0, 0.75, 0.2);
+
+  --shadow-float: 0 0 0 1px var(--line-2), 0 8px 30px -12px rgb(0 0 0 / 0.18);
+  --shadow-knob: 0 2px 10px rgb(0 0 0 / 0.2);
+  --shadow-card: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-win: 0 0 0 1px var(--line), 0 1px 3px rgb(0 0 0 / 0.04);
+
+  --animate-nudge-down: nudge-down 2.4s var(--ease-out) infinite;
+  --animate-nudge-up: nudge-up 2.4s var(--ease-out) infinite;
+  --animate-ping: ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+  --animate-spin-slow: spin 5.5s linear infinite;
+  --animate-knob-nudge: knob-nudge 2.2s var(--ease-ui) infinite;
+  --animate-hint-run: hint-run 2.2s var(--ease-ui) infinite;
+  --animate-bar-in: bar-in 0.8s var(--ease-spring) both;
+  --animate-seg-fill: seg-fill var(--dur, 4s) linear forwards;
+}
+
+/* ---------- 3. Variants ---------- */
+/* Dark theme, whether it comes from the system or the visitor's choice. */
+@custom-variant dark {
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) & {
+      @slot;
+    }
+  }
+  :root[data-theme='dark'] & {
+    @slot;
+  }
+}
+/* Short screens: secondary details are trimmed so every screen still fits (DESIGN.md §3). */
+@custom-variant short-phone {
+  @media (max-width: 734px) and (max-height: 720px), (max-width: 380px) and (max-height: 800px) {
+    @slot;
+  }
+}
+@custom-variant tiny {
+  @media (max-width: 380px) and (max-height: 720px) {
+    @slot;
+  }
+}
+@custom-variant short-tablet {
+  @media (min-width: 735px) and (max-width: 1068px) and (max-height: 900px) {
+    @slot;
+  }
+}
+@custom-variant short-laptop {
+  @media (min-width: 1069px) and (max-height: 840px) {
+    @slot;
+  }
+}
+@custom-variant shorter-laptop {
+  @media (min-width: 1069px) and (max-height: 760px) {
+    @slot;
+  }
+}
+@custom-variant fine-hover {
+  @media (hover: hover) and (pointer: fine) {
+    @slot;
+  }
+}
+
+/* ---------- 4. Base ---------- */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  html,
+  body {
+    height: 100%;
+  }
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--fg);
+    font: 400 15px/1.6 var(--font-sans);
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition:
+      background-color 0.6s var(--ease-ui),
+      color 0.4s var(--ease-ui);
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  ::selection {
+    background: var(--fg);
+    color: var(--bg);
+  }
+  :focus-visible {
+    outline: 2px solid var(--fg);
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+  button {
+    cursor: pointer;
+  }
+  /* Filled parts of sprite icons. Global on purpose: <use> copies are styled as their <symbol>. */
+  .ico-fill {
+    fill: currentColor;
+    stroke: none;
+  }
+}
+
+/* ---------- 5. Utilities ---------- */
+/* The one content column. Every screen, nav and footer uses it (DESIGN.md §3). */
+@utility container-screen {
+  width: var(--vc);
+  margin-inline: auto;
+}
+
+/* Icons: 1em square line icons that take the current colour (components/ui/icon). */
+@utility ico {
+  width: 1em;
+  height: 1em;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Gradient text in the screen's own gradient (--g, set by warm-g / cool-g). */
+@utility text-gradient {
+  background: var(--g, var(--fg));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+@utility warm-g {
+  --g: linear-gradient(120deg, var(--color-warm-1), var(--color-warm-2) 60%, var(--color-warm-3));
+}
+@utility cool-g {
+  --g: linear-gradient(120deg, var(--color-cool-1), var(--color-cool-2) 60%, var(--color-cool-3));
+}
+@utility bg-gradient {
+  background: var(--g, var(--fg));
+}
+
+/* Type roles. Each role has one partner: label → heading → lead; stat → title → caption (DESIGN.md §2). */
+@utility type-label {
+  font: 500 12px/1.4 var(--font-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+@utility type-meta {
+  font: 400 12.5px/1.5 var(--font-label);
+  letter-spacing: 0.01em;
+  color: var(--fg-3);
+}
+@utility type-display {
+  font: 600 48px/1.12 var(--font-display);
+  letter-spacing: -0.028em;
+  & b {
+    font-weight: 600;
+    background: linear-gradient(90deg, var(--fg), color-mix(in srgb, var(--fg) 55%, transparent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  @media (max-width: 1068px) {
+    font-size: 40px;
+  }
+  @media (max-width: 734px) {
+    font-size: 30px;
+    line-height: 1.17;
+    letter-spacing: -0.022em;
+  }
+}
+@utility type-h2 {
+  font: 600 32px/1.15 var(--font-display);
+  letter-spacing: -0.022em;
+  @media (max-width: 1068px) {
+    font-size: 28px;
+  }
+  @media (max-width: 734px) {
+    font-size: 24px;
+    line-height: 1.2;
+  }
+}
+@utility type-quote {
+  font: 500 36px/1.12 var(--font-display);
+  letter-spacing: -0.025em;
+  @media (max-width: 1068px) {
+    font-size: 30px;
+  }
+  @media (max-width: 734px) {
+    font-size: 24px;
+    line-height: 1.17;
+  }
+}
+@utility type-statement {
+  font: 500 26px/1.42 var(--font-display);
+  letter-spacing: -0.015em;
+  color: var(--fg-3);
+  & strong {
+    color: var(--fg);
+    font-weight: 500;
+  }
+  @media (max-width: 1068px) {
+    font-size: 22px;
+  }
+  @media (max-width: 734px) {
+    font-size: 19px;
+    line-height: 1.45;
+  }
+  @media (max-width: 380px) and (max-height: 720px) {
+    font-size: 17px;
+  }
+}
+@utility type-lead {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--fg-2);
+  & strong {
+    color: var(--fg);
+    font-weight: 500;
+  }
+  @media (max-width: 1068px) {
+    font-size: 16px;
+  }
+  @media (max-width: 734px) {
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  @media (max-width: 734px) and (max-height: 720px), (max-width: 380px) and (max-height: 800px) {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}
+@utility type-stat {
+  font: 600 32px/1 var(--font-display);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  @media (max-width: 1068px) {
+    font-size: 28px;
+  }
+  @media (max-width: 734px) {
+    font-size: 26px;
+  }
+}
+@utility type-title {
+  font-size: 15px;
+  line-height: 1.35;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+@utility type-cap {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--fg-2);
+  letter-spacing: -0.005em;
+}
+
+/* Reveal: content rises in when its screen first becomes active ([data-seen], components/screens). */
+@utility reveal {
+  :root.js & {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  /* An animation, not a transition: a screen that is server-rendered as seen (the first one) rises in on the
+     very first paint, before any script runs, which keeps Largest Contentful Paint early. */
+  :root.js [data-seen] & {
+    animation: reveal-rise 0.9s var(--ease-ui) calc(var(--i, 0) * 90ms + 80ms) both;
+  }
+}
+
+/* Background art stays hidden until its screen is first seen, then fades in. */
+@utility art-reveal {
+  :root.js &:not([data-seen] *) {
+    opacity: 0 !important;
+  }
+}
+
+/* Exploded devices (Web and mobile screen): layers rest stacked on their base and lift into place while
+   their screen is active ([data-exploded]); top layers drop first when it leaves. --d is the layer's depth,
+   --c how far it sits above its place when stacked. */
+@utility explode-layer {
+  transition:
+    transform 0.9s var(--ease-implode),
+    opacity 0.6s var(--ease-ui);
+  transition-delay: calc((5 - var(--d, 0)) * 60ms);
+  :root.js & {
+    transform: translateY(var(--c, 0px));
+    opacity: 0.25;
+  }
+  :root.js [data-exploded] & {
+    transform: none;
+    opacity: 1;
+    transition:
+      transform 1.5s var(--ease-out),
+      opacity 0.8s var(--ease-ui);
+    transition-delay: calc(var(--d, 0) * 110ms + 250ms);
+  }
+}
+@utility explode-guide {
+  :root.js & {
+    opacity: 0;
+    transition: opacity 0.3s var(--ease-ui);
+  }
+  :root.js [data-exploded] & {
+    opacity: 1;
+    transition: opacity 0.8s var(--ease-ui) 1.4s;
+  }
+}
+
+/* Paper grain: a fixed noise layer gives glossy screens a matte, e-ink-like finish. */
+@utility grain-layer {
+  position: fixed;
+  inset: -50%;
+  z-index: 250;
+  pointer-events: none;
+  opacity: 0.09;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+}
+
+/* Scattered light dots behind the About screen (a fixed random pattern, tinted by the theme). */
+@utility dot-field {
+  background: var(--grid-dot);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Ccircle cx='136' cy='63' r='1' fill-opacity='0.35'/%3E%3Ccircle cx='345' cy='40' r='2' fill-opacity='0.35'/%3E%3Ccircle cx='382' cy='90' r='1' fill-opacity='0.9'/%3E%3Ccircle cx='176' cy='101' r='2' fill-opacity='0.9'/%3E%3Ccircle cx='25' cy='237' r='1.2' fill-opacity='1'/%3E%3Ccircle cx='398' cy='242' r='1.7' fill-opacity='0.35'/%3E%3Ccircle cx='410' cy='20' r='1.2' fill-opacity='0.7'/%3E%3Ccircle cx='176' cy='227' r='2' fill-opacity='0.7'/%3E%3Ccircle cx='235' cy='286' r='1' fill-opacity='1'/%3E%3Ccircle cx='240' cy='79' r='1' fill-opacity='1'/%3E%3Ccircle cx='299' cy='237' r='2' fill-opacity='0.5'/%3E%3Ccircle cx='208' cy='223' r='1.4' fill-opacity='0.9'/%3E%3Ccircle cx='246' cy='190' r='1.4' fill-opacity='0.5'/%3E%3Ccircle cx='334' cy='294' r='1.2' fill-opacity='0.35'/%3E%3Ccircle cx='241' cy='221' r='1.4' fill-opacity='0.9'/%3E%3Ccircle cx='121' cy='412' r='1' fill-opacity='1'/%3E%3Ccircle cx='176' cy='318' r='1.2' fill-opacity='0.9'/%3E%3Ccircle cx='177' cy='404' r='1' fill-opacity='1'/%3E%3Ccircle cx='241' cy='368' r='1.4' fill-opacity='0.7'/%3E%3Ccircle cx='292' cy='250' r='2' fill-opacity='0.9'/%3E%3Ccircle cx='29' cy='39' r='1.4' fill-opacity='0.9'/%3E%3Ccircle cx='293' cy='27' r='1.4' fill-opacity='1'/%3E%3Ccircle cx='417' cy='345' r='1.4' fill-opacity='0.9'/%3E%3Ccircle cx='373' cy='146' r='1.7' fill-opacity='0.7'/%3E%3Ccircle cx='71' cy='49' r='1' fill-opacity='0.5'/%3E%3Ccircle cx='323' cy='54' r='1.2' fill-opacity='0.9'/%3E%3Ccircle cx='164' cy='366' r='1' fill-opacity='0.5'/%3E%3Ccircle cx='189' cy='231' r='1.2' fill-opacity='0.9'/%3E%3Ccircle cx='363' cy='117' r='1.7' fill-opacity='0.7'/%3E%3Ccircle cx='287' cy='160' r='1.2' fill-opacity='0.5'/%3E%3Ccircle cx='35' cy='64' r='1.2' fill-opacity='0.35'/%3E%3Ccircle cx='204' cy='247' r='1.4' fill-opacity='0.7'/%3E%3Ccircle cx='2' cy='176' r='1.4' fill-opacity='1'/%3E%3Ccircle cx='238' cy='400' r='2' fill-opacity='1'/%3E%3Ccircle cx='275' cy='311' r='1.7' fill-opacity='1'/%3E%3Ccircle cx='165' cy='168' r='1' fill-opacity='0.9'/%3E%3Ccircle cx='266' cy='26' r='1' fill-opacity='0.5'/%3E%3Ccircle cx='185' cy='46' r='2' fill-opacity='0.35'/%3E%3Ccircle cx='43' cy='238' r='2' fill-opacity='0.35'/%3E%3Ccircle cx='399' cy='258' r='1' fill-opacity='0.5'/%3E%3Ccircle cx='258' cy='62' r='1.4' fill-opacity='0.7'/%3E%3Ccircle cx='253' cy='199' r='1' fill-opacity='0.9'/%3E%3Ccircle cx='417' cy='196' r='1.7' fill-opacity='0.7'/%3E%3Ccircle cx='36' cy='43' r='1.4' fill-opacity='0.7'/%3E%3Ccircle cx='201' cy='291' r='2' fill-opacity='0.35'/%3E%3Ccircle cx='86' cy='400' r='1.4' fill-opacity='0.5'/%3E%3C/svg%3E")
+    0 0 / 420px 420px repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Ccircle cx='136' cy='63' r='1' fill-opacity='0.35'/%3E%3Ccircle cx='345' cy='40' r='2' fill-opacity='0.35'/%3E%3Ccircle cx='382' cy='90' r='1' fill-opacity='0.9'/%3E%3Ccircle cx='176' cy='101' r='2' fill-opacity='0.9'/%3E%3Ccircle cx='25' cy='237' r='1.2' fill-opacity='1'/%3E%3Ccircle cx='398' cy='242' r='1.7' fill-opacity='0.35'/%3E%3Ccircle cx='410' cy='20' r='1.2' fill-opacity='0.7'/%3E%3Ccircle cx='176' cy='227' r='2' fill-opacity='0.7'/%3E%3Ccircle cx='235' cy='286' r='1' fill-opacity='1'/%3E%3Ccircle cx='240' cy='79' r='1' fill-opacity='1'/%3E%3Ccircle cx='299' cy='237' r='2' fill-opacity='0.5'/%3E%3Ccircle cx='208' cy='223' r='1.4' fill-opacity='0.9'/%3E%3Ccircle cx='246' cy='190' r='1.4' fill-opacity='0.5'/%3E%3Ccircle cx='334' cy='294' r='1.2' fill-opacity='0.35'/%3E%3Ccircle cx='241' cy='221' r='1.4' fill-opacity='0.9'/%3E%3Ccircle cx='121' cy='412' r='1' fill-opacity='1'/%3E%3Ccircle cx='176' cy='318' r='1.2' fill-opacity='0.9'/%3E%3Ccircle cx='177' cy='404' r='1' fill-opacity='1'/%3E%3Ccircle cx='241' cy='368' r='1.4' fill-opacity='0.7'/%3E%3Ccircle cx='292' cy='250' r='2' fill-opacity='0.9'/%3E%3Ccircle cx='29' cy='39' r='1.4' fill-opacity='0.9'/%3E%3Ccircle cx='293' cy='27' r='1.4' fill-opacity='1'/%3E%3Ccircle cx='417' cy='345' r='1.4' fill-opacity='0.9'/%3E%3Ccircle cx='373' cy='146' r='1.7' fill-opacity='0.7'/%3E%3Ccircle cx='71' cy='49' r='1' fill-opacity='0.5'/%3E%3Ccircle cx='323' cy='54' r='1.2' fill-opacity='0.9'/%3E%3Ccircle cx='164' cy='366' r='1' fill-opacity='0.5'/%3E%3Ccircle cx='189' cy='231' r='1.2' fill-opacity='0.9'/%3E%3Ccircle cx='363' cy='117' r='1.7' fill-opacity='0.7'/%3E%3Ccircle cx='287' cy='160' r='1.2' fill-opacity='0.5'/%3E%3Ccircle cx='35' cy='64' r='1.2' fill-opacity='0.35'/%3E%3Ccircle cx='204' cy='247' r='1.4' fill-opacity='0.7'/%3E%3Ccircle cx='2' cy='176' r='1.4' fill-opacity='1'/%3E%3Ccircle cx='238' cy='400' r='2' fill-opacity='1'/%3E%3Ccircle cx='275' cy='311' r='1.7' fill-opacity='1'/%3E%3Ccircle cx='165' cy='168' r='1' fill-opacity='0.9'/%3E%3Ccircle cx='266' cy='26' r='1' fill-opacity='0.5'/%3E%3Ccircle cx='185' cy='46' r='2' fill-opacity='0.35'/%3E%3Ccircle cx='43' cy='238' r='2' fill-opacity='0.35'/%3E%3Ccircle cx='399' cy='258' r='1' fill-opacity='0.5'/%3E%3Ccircle cx='258' cy='62' r='1.4' fill-opacity='0.7'/%3E%3Ccircle cx='253' cy='199' r='1' fill-opacity='0.9'/%3E%3Ccircle cx='417' cy='196' r='1.7' fill-opacity='0.7'/%3E%3Ccircle cx='36' cy='43' r='1.4' fill-opacity='0.7'/%3E%3Ccircle cx='201' cy='291' r='2' fill-opacity='0.35'/%3E%3Ccircle cx='86' cy='400' r='1.4' fill-opacity='0.5'/%3E%3C/svg%3E")
+    0 0 / 420px 420px repeat;
+}
+@utility dot-field-fade {
+  -webkit-mask-image: radial-gradient(
+    circle at 50% 48%,
+    #000 26%,
+    rgb(0 0 0 / 0.5) 60%,
+    transparent 84%
+  );
+  mask-image: radial-gradient(circle at 50% 48%, #000 26%, rgb(0 0 0 / 0.5) 60%, transparent 84%);
+}
+
+/* Theme change: a sky that sweeps from the button (components/theme). The leading edge is a band of sky colours. */
+@utility sky-to-dark {
+  background: radial-gradient(
+    closest-side,
+    #0b0c0e 0%,
+    #0b0c0e 42%,
+    #101230 50%,
+    #24184a 58%,
+    #4c2163 65%,
+    #8e2d63 72%,
+    #c9485a 79%,
+    #eb7650 86%,
+    #f7ae6a 93%,
+    rgb(250 210 140 / 0) 100%
+  );
+}
+@utility sky-to-light {
+  background: radial-gradient(
+    closest-side,
+    #e9e7e0 0%,
+    #e9e7e0 42%,
+    #fbf0d6 50%,
+    #ffe0a0 58%,
+    #fdc08a 65%,
+    #f59c93 72%,
+    #dd8db5 79%,
+    #9d84d6 86%,
+    #4e5ba3 93%,
+    rgb(40 52 120 / 0) 100%
+  );
+}
+
+/* The contact card's moving shine border. */
+@utility shine-border {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg 230deg,
+    color-mix(in srgb, var(--fg) 18%, transparent) 300deg,
+    var(--fg) 360deg
+  );
+}
+
+/* Hide a scrollbar but keep scrolling. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Fade the edges of a sliding window of text (the "Open to …" roll). */
+@utility fade-y {
+  -webkit-mask-image: linear-gradient(transparent, #000 28%, #000 72%, transparent);
+  mask-image: linear-gradient(transparent, #000 28%, #000 72%, transparent);
+}
+@utility fade-x-end {
+  -webkit-mask-image: linear-gradient(90deg, #000 82%, transparent);
+  mask-image: linear-gradient(90deg, #000 82%, transparent);
+}
+
+/* ---------- 6. Theme switch and motion ---------- */
+/* While the sky covers the page the theme swaps instantly, with no colour transitions. */
+.theme-switching,
+.theme-switching * {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+  :root.js .reveal,
+  :root.js .explode-layer,
+  :root.js .explode-guide {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Keyframes used by components (DESIGN.md §6). */
+/* Starts at 0.01, not 0: browsers skip fully transparent text when picking Largest Contentful Paint, so the
+   hero would only count once a later, smaller text appeared. 1% is invisible. */
+@keyframes reveal-rise {
+  from {
+    opacity: 0.01;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes nudge-down {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(3px);
+  }
+}
+@keyframes nudge-up {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-3px);
+  }
+}
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes seg-fill {
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes knob-nudge {
+  0%,
+  55%,
+  100% {
+    transform: translateX(0);
+  }
+  18% {
+    transform: translateX(9px);
+  }
+  30% {
+    transform: translateX(-2px);
+  }
+  42% {
+    transform: translateX(4px);
+  }
+}
+@keyframes hint-run {
+  0% {
+    opacity: 0;
+    transform: translate(-6px, -50%);
+  }
+  25% {
+    opacity: 0.9;
+  }
+  60%,
+  100% {
+    opacity: 0;
+    transform: translate(18px, -50%);
+  }
+}
+@keyframes bar-in {
+  from {
+    clip-path: inset(0 calc(100% - 44px) 0 0 round 22px);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 22px);
+  }
+}
